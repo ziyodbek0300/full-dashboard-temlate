@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useLogin } from "../hooks";
 import { ROUTES } from "@/shared/constants/routes";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
+import { FormField } from "@/shared/components/form";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -35,31 +34,21 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="name@example.com"
-          {...register("email")}
-        />
-        {errors.email && (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
-        )}
-      </div>
+      <FormField
+        label="Email"
+        type="email"
+        placeholder="name@example.com"
+        registration={register("email")}
+        error={errors.email}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input
-          id="password"
-          type="password"
-          placeholder="Enter your password"
-          {...register("password")}
-        />
-        {errors.password && (
-          <p className="text-sm text-destructive">{errors.password.message}</p>
-        )}
-      </div>
+      <FormField
+        label="Password"
+        type="password"
+        placeholder="Enter your password"
+        registration={register("password")}
+        error={errors.password}
+      />
 
       {login.error && (
         <p className="text-sm text-destructive">

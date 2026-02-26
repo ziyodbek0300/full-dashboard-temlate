@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useRegister } from "../hooks";
 import { ROUTES } from "@/shared/constants/routes";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
+import { FormField } from "@/shared/components/form";
 
 const registerSchema = z
   .object({
@@ -43,54 +42,36 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input id="name" placeholder="John Doe" {...register("name")} />
-        {errors.name && (
-          <p className="text-sm text-destructive">{errors.name.message}</p>
-        )}
-      </div>
+      <FormField
+        label="Name"
+        placeholder="John Doe"
+        registration={register("name")}
+        error={errors.name}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="name@example.com"
-          {...register("email")}
-        />
-        {errors.email && (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
-        )}
-      </div>
+      <FormField
+        label="Email"
+        type="email"
+        placeholder="name@example.com"
+        registration={register("email")}
+        error={errors.email}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input
-          id="password"
-          type="password"
-          placeholder="Create a password"
-          {...register("password")}
-        />
-        {errors.password && (
-          <p className="text-sm text-destructive">{errors.password.message}</p>
-        )}
-      </div>
+      <FormField
+        label="Password"
+        type="password"
+        placeholder="Create a password"
+        registration={register("password")}
+        error={errors.password}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="confirmPassword">Confirm Password</Label>
-        <Input
-          id="confirmPassword"
-          type="password"
-          placeholder="Confirm your password"
-          {...register("confirmPassword")}
-        />
-        {errors.confirmPassword && (
-          <p className="text-sm text-destructive">
-            {errors.confirmPassword.message}
-          </p>
-        )}
-      </div>
+      <FormField
+        label="Confirm Password"
+        type="password"
+        placeholder="Confirm your password"
+        registration={register("confirmPassword")}
+        error={errors.confirmPassword}
+      />
 
       {registerMutation.error && (
         <p className="text-sm text-destructive">

@@ -11,8 +11,7 @@ import {
   CardDescription,
 } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
+import { FormField } from "@/shared/components/form";
 import { useAuth } from "@/modules/auth/context";
 
 const profileSchema = z.object({
@@ -53,25 +52,18 @@ export function SettingsPage() {
             onSubmit={handleSubmit(onSubmit)}
             className="max-w-lg space-y-4"
           >
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" {...register("name")} />
-              {errors.name && (
-                <p className="text-sm text-destructive">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
+            <FormField
+              label="Name"
+              registration={register("name")}
+              error={errors.name}
+            />
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" {...register("email")} />
-              {errors.email && (
-                <p className="text-sm text-destructive">
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
+            <FormField
+              label="Email"
+              type="email"
+              registration={register("email")}
+              error={errors.email}
+            />
 
             <Button type="submit">Save Changes</Button>
           </form>

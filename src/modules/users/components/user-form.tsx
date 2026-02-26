@@ -1,17 +1,9 @@
-import { useForm } from "react-hook-form";
+import { type Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Role } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui/select";
+import { FormField, FormSelect } from "@/shared/components/form";
 import type { User } from "../types";
 
 const createSchema = z.object({
@@ -37,6 +29,17 @@ interface UserFormProps {
   isPending?: boolean;
 }
 
+const ROLE_OPTIONS = [
+  { label: "Admin", value: Role.ADMIN },
+  { label: "Manager", value: Role.MANAGER },
+  { label: "Viewer", value: Role.VIEWER },
+];
+
+const STATUS_OPTIONS = [
+  { label: "Active", value: "active" },
+  { label: "Inactive", value: "inactive" },
+];
+
 export function UserForm({ user, onSubmit, isPending }: UserFormProps) {
   const isEditing = !!user;
   const schema = isEditing ? updateSchema : createSchema;
@@ -44,8 +47,7 @@ export function UserForm({ user, onSubmit, isPending }: UserFormProps) {
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
+    control,
     formState: { errors },
   } = useForm<CreateFormValues | UpdateFormValues>({
     resolver: zodResolver(schema),
@@ -59,86 +61,56 @@ export function UserForm({ user, onSubmit, isPending }: UserFormProps) {
       : { role: Role.VIEWER },
   });
 
-  const currentRole = watch("role");
-  const currentStatus = isEditing
-    ? watch("status" as keyof UpdateFormValues)
-    : undefined;
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input id="name" {...register("name")} />
-        {errors.name && (
-          <p className="text-sm text-destructive">{errors.name.message}</p>
-        )}
-      </div>
+      <FormField
+        label="Name"
+        registration={register("name")}
+        error={errors.name}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" {...register("email")} />
-        {errors.email && (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
-        )}
-      </div>
+      <FormField
+        label="Email"
+        type="email"
+        registration={register("email")}
+        error={errors.email}
+      />
 
       {!isEditing && (
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            {...register("password" as keyof CreateFormValues)}
-          />
-          {"password" in errors && errors.password && (
-            <p className="text-sm text-destructive">
-              {
-                (errors as { password?: { message?: string } }).password
-                  ?.message
-              }
-            </p>
-          )}
-        </div>
+        <FormField
+          label="Password"
+          type="password"
+          registration={register("password" as keyof CreateFormValues)}
+          error={
+            "password" in errors
+              ? ((errors as { password?: { message?: string } }).password as
+                  | import("react-hook-form").FieldError
+                  | undefined)
+              : undefined
+          }
+        />
       )}
 
-      <div className="space-y-2">
-        <Label>Role</Label>
-        <Select
-          value={currentRole}
-          onValueChange={(value) => setValue("role", value as Role)}
-        >
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value={Role.ADMIN}>Admin</SelectItem>
-            <SelectItem value={Role.MANAGER}>Manager</SelectItem>
-            <SelectItem value={Role.VIEWER}>Viewer</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <FormSelect
+        label="Role"
+        name="role"
+        control={control}
+        options={ROLE_OPTIONS}
+        error={errors.role}
+      />
 
       {isEditing && (
-        <div className="space-y-2">
-          <Label>Status</Label>
-          <Select
-            value={currentStatus as string}
-            onValueChange={(value) =>
-              setValue(
-                "status" as keyof UpdateFormValues,
-                value as "active" | "inactive"
-              )
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="inactive">Inactive</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <FormSelect
+          label="Status"
+          name={"status" as Path<CreateFormValues | UpdateFormValues>}
+          control={control}
+          options={STATUS_OPTIONS}
+          error={
+            "status" in errors
+              ? (errors.status as import("react-hook-form").FieldError)
+              : undefined
+          }
+        />
       )}
 
       <Button type="submit" disabled={isPending}>
