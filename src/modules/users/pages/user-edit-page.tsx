@@ -6,8 +6,10 @@ import { Button } from "@/shared/components/ui/button";
 import { LoadingSkeleton } from "@/shared/components/loading-skeleton";
 import { ROUTES } from "@/shared/constants/routes";
 import { useUser, useUpdateUser } from "../hooks";
-import { UserForm } from "../components/user-form";
-import type { UpdateUserDto } from "../types";
+import {
+  EditUserForm,
+  type EditFormValues,
+} from "../components/edit-user-form";
 
 export function UserEditPage() {
   const { id } = useParams<{ id: string }>();
@@ -15,9 +17,9 @@ export function UserEditPage() {
   const { data: user, isLoading } = useUser(id!);
   const updateUser = useUpdateUser();
 
-  const handleSubmit = (data: unknown): void => {
+  const handleSubmit = (data: EditFormValues): void => {
     updateUser.mutate(
-      { id: id!, data: data as UpdateUserDto },
+      { id: id!, data },
       {
         onSuccess: () => {
           toast.success("User updated successfully");
@@ -44,7 +46,7 @@ export function UserEditPage() {
         </Button>
       }
     >
-      <UserForm
+      <EditUserForm
         user={user}
         onSubmit={handleSubmit}
         isPending={updateUser.isPending}

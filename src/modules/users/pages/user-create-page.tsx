@@ -5,15 +5,17 @@ import { PageLayout } from "@/shared/components/layout/page-layout";
 import { Button } from "@/shared/components/ui/button";
 import { ROUTES } from "@/shared/constants/routes";
 import { useCreateUser } from "../hooks";
-import { UserForm } from "../components/user-form";
-import type { CreateUserDto } from "../types";
+import {
+  CreateUserForm,
+  type CreateFormValues,
+} from "../components/create-user-form";
 
 export function UserCreatePage() {
   const navigate = useNavigate();
   const createUser = useCreateUser();
 
-  const handleSubmit = (data: unknown): void => {
-    createUser.mutate(data as CreateUserDto, {
+  const handleSubmit = (data: CreateFormValues): void => {
+    createUser.mutate(data, {
       onSuccess: () => {
         toast.success("User created successfully");
         navigate(ROUTES.USERS);
@@ -35,7 +37,10 @@ export function UserCreatePage() {
         </Button>
       }
     >
-      <UserForm onSubmit={handleSubmit} isPending={createUser.isPending} />
+      <CreateUserForm
+        onSubmit={handleSubmit}
+        isPending={createUser.isPending}
+      />
     </PageLayout>
   );
 }
