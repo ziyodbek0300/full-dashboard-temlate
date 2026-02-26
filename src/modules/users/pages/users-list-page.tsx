@@ -6,8 +6,8 @@ import { Button } from "@/shared/components/ui/button";
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
 import { EmptyState } from "@/shared/components/empty-state";
 import { LoadingSkeleton } from "@/shared/components/loading-skeleton";
-import { useAuth } from "@/modules/auth/context";
 import { Permission } from "@/shared/types";
+import { PermissionGate } from "@/shared/components/permission-gate";
 import { ROUTES } from "@/shared/constants/routes";
 import { useMutationWithToast } from "@/shared/hooks/use-mutation-with-toast";
 import { useUsers, useDeleteUser } from "../hooks";
@@ -17,7 +17,6 @@ import type { User, UserFilters as UserFiltersType } from "../types";
 
 export function UsersListPage() {
   const navigate = useNavigate();
-  const { hasPermission } = useAuth();
   const [filters, setFilters] = useState<UserFiltersType>({
     page: 1,
     perPage: 10,
@@ -44,12 +43,12 @@ export function UsersListPage() {
       title="Users"
       description="Manage your team members and their access."
       actions={
-        hasPermission(Permission.USERS_CREATE) ? (
+        <PermissionGate permission={Permission.USERS_CREATE}>
           <Button onClick={() => navigate(ROUTES.USER_CREATE)}>
             <Plus className="mr-2 h-4 w-4" />
             Add User
           </Button>
-        ) : undefined
+        </PermissionGate>
       }
     >
       <UserFilters filters={filters} onChange={setFilters} />
@@ -62,12 +61,12 @@ export function UsersListPage() {
           title="No users found"
           description="Get started by adding your first team member."
           action={
-            hasPermission(Permission.USERS_CREATE) ? (
+            <PermissionGate permission={Permission.USERS_CREATE}>
               <Button onClick={() => navigate(ROUTES.USER_CREATE)}>
                 <Plus className="mr-2 h-4 w-4" />
                 Add User
               </Button>
-            ) : undefined
+            </PermissionGate>
           }
         />
       ) : (

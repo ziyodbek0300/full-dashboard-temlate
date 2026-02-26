@@ -10,8 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import { useAuth } from "@/modules/auth/context";
 import { Permission } from "@/shared/types";
+import { PermissionGate } from "@/shared/components/permission-gate";
 import { ROUTES } from "@/shared/constants/routes";
 import type { User } from "../types";
 
@@ -31,7 +31,6 @@ export function UserTable({
   onDelete,
 }: UserTableProps) {
   const navigate = useNavigate();
-  const { hasPermission } = useAuth();
 
   const columns: ColumnDef<User>[] = [
     {
@@ -79,15 +78,15 @@ export function UserTable({
               <Eye className="mr-2 h-4 w-4" />
               View
             </DropdownMenuItem>
-            {hasPermission(Permission.USERS_UPDATE) && (
+            <PermissionGate permission={Permission.USERS_UPDATE}>
               <DropdownMenuItem
                 onClick={() => navigate(ROUTES.USER_EDIT(row.original.id))}
               >
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit
               </DropdownMenuItem>
-            )}
-            {hasPermission(Permission.USERS_DELETE) && (
+            </PermissionGate>
+            <PermissionGate permission={Permission.USERS_DELETE}>
               <DropdownMenuItem
                 className="text-destructive"
                 onClick={() => onDelete(row.original)}
@@ -95,7 +94,7 @@ export function UserTable({
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete
               </DropdownMenuItem>
-            )}
+            </PermissionGate>
           </DropdownMenuContent>
         </DropdownMenu>
       ),

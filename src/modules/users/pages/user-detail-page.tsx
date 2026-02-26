@@ -10,15 +10,14 @@ import {
 } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
 import { LoadingSkeleton } from "@/shared/components/loading-skeleton";
-import { useAuth } from "@/modules/auth/context";
 import { Permission } from "@/shared/types";
+import { PermissionGate } from "@/shared/components/permission-gate";
 import { ROUTES } from "@/shared/constants/routes";
 import { useUser } from "../hooks";
 
 export function UserDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { hasPermission } = useAuth();
   const { data: user, isLoading } = useUser(id!);
 
   if (isLoading) return <LoadingSkeleton variant="form" count={4} />;
@@ -34,12 +33,12 @@ export function UserDetailPage() {
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
-          {hasPermission(Permission.USERS_UPDATE) && (
+          <PermissionGate permission={Permission.USERS_UPDATE}>
             <Button onClick={() => navigate(ROUTES.USER_EDIT(user.id))}>
               <Pencil className="mr-2 h-4 w-4" />
               Edit
             </Button>
-          )}
+          </PermissionGate>
         </div>
       }
     >
