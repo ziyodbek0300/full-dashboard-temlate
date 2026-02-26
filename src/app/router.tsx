@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate, useRouteError } from "react-router-dom";
 import { AuthGuard } from "@/shared/components/guards/auth-guard";
 import { PublicGuard } from "@/shared/components/guards/public-guard";
 import { AppLayout } from "@/shared/components/layout/app-layout";
+import { FullscreenSpinner } from "@/shared/components/fullscreen-spinner";
 import { ROUTES } from "@/shared/constants/routes";
 import { Button } from "@/shared/components/ui/button";
 
@@ -61,13 +62,7 @@ function RouteErrorFallback() {
 
 function LazyLoad({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-[400px] items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-        </div>
-      }
-    >
+    <Suspense fallback={<FullscreenSpinner className="min-h-[400px]" />}>
       {children}
     </Suspense>
   );
