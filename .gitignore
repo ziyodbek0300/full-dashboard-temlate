@@ -1,0 +1,20 @@
+node_modules
+dist
+*.tsbuildinfo
+*.local
+.env
+.env.development
+.env.production
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# OS
+.DS_Store
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
