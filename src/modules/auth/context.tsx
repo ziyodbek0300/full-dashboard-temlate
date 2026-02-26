@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useMemo,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 import { useCurrentUser } from "./hooks";
 import type { AuthUser } from "./types";
 import { Permission, Role, ROLE_PERMISSIONS } from "@/shared/types";

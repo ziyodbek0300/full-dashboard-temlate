@@ -63,9 +63,7 @@ export function LoginForm() {
 
       {login.error && (
         <p className="text-sm text-destructive">
-          {login.error instanceof Error
-            ? login.error.message
-            : "Login failed"}
+          {login.error instanceof Error ? login.error.message : "Login failed"}
         </p>
       )}
 

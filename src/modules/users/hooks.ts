@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/shared/constants/query-keys";
 import * as usersApi from "./api";
 import type { CreateUserDto, UpdateUserDto, UserFilters } from "./types";

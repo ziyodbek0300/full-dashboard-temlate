@@ -1,9 +1,5 @@
 import { lazy, Suspense } from "react";
-import {
-  createBrowserRouter,
-  Navigate,
-  useRouteError,
-} from "react-router-dom";
+import { createBrowserRouter, Navigate, useRouteError } from "react-router-dom";
 import { AuthGuard } from "@/shared/components/guards/auth-guard";
 import { PublicGuard } from "@/shared/components/guards/public-guard";
 import { AppLayout } from "@/shared/components/layout/app-layout";
@@ -52,7 +48,9 @@ function RouteErrorFallback() {
     <div className="flex min-h-[400px] flex-col items-center justify-center gap-4">
       <h2 className="text-xl font-semibold">Something went wrong</h2>
       <p className="text-muted-foreground">
-        {error instanceof Error ? error.message : "An unexpected error occurred"}
+        {error instanceof Error
+          ? error.message
+          : "An unexpected error occurred"}
       </p>
       <Button variant="outline" onClick={() => window.location.reload()}>
         Try again

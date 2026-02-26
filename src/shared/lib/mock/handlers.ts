@@ -302,7 +302,15 @@ export function setupMockInterceptor(axiosInstance: AxiosInstance): void {
       ? fullPath.slice(baseURL.length)
       : fullPath;
 
-    const result = handleRequest(relativePath, method, config.data ? (typeof config.data === "string" ? JSON.parse(config.data) : config.data) : undefined);
+    const result = handleRequest(
+      relativePath,
+      method,
+      config.data
+        ? typeof config.data === "string"
+          ? JSON.parse(config.data)
+          : config.data
+        : undefined
+    );
 
     if (result) {
       await delay();
@@ -320,7 +328,9 @@ export function setupMockInterceptor(axiosInstance: AxiosInstance): void {
       }
 
       // Return an adapter override that resolves with the mock data
-      (config as InternalAxiosRequestConfig & { _mockResponse?: MockResponse })._mockResponse = result;
+      (
+        config as InternalAxiosRequestConfig & { _mockResponse?: MockResponse }
+      )._mockResponse = result;
       config.adapter = () =>
         Promise.resolve({
           data: result.data,

@@ -5,11 +5,7 @@ import { useSidebarStore } from "@/shared/hooks/use-sidebar";
 import { NAV_ITEMS } from "@/shared/constants/navigation";
 import { useAuth } from "@/modules/auth/context";
 import { Button } from "../ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "../ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 export function Sidebar() {
   const { collapsed, toggle } = useSidebarStore();
@@ -28,9 +24,7 @@ export function Sidebar() {
       )}
     >
       <div className="flex h-14 items-center border-b px-4">
-        {!collapsed && (
-          <span className="text-lg font-semibold">Dashboard</span>
-        )}
+        {!collapsed && <span className="text-lg font-semibold">Dashboard</span>}
         <Button
           variant="ghost"
           size="icon"

@@ -51,7 +51,7 @@ export function SettingsPage() {
         <CardContent>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 max-w-lg"
+            className="max-w-lg space-y-4"
           >
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>

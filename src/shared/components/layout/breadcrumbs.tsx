@@ -16,12 +16,12 @@ export function Breadcrumbs() {
           {crumb.href ? (
             <Link
               to={crumb.href}
-              className="hover:text-foreground transition-colors"
+              className="transition-colors hover:text-foreground"
             >
               {crumb.label}
             </Link>
           ) : (
-            <span className="text-foreground font-medium">{crumb.label}</span>
+            <span className="font-medium text-foreground">{crumb.label}</span>
           )}
         </Fragment>
       ))}

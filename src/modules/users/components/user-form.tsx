@@ -50,15 +50,22 @@ export function UserForm({ user, onSubmit, isPending }: UserFormProps) {
   } = useForm<CreateFormValues | UpdateFormValues>({
     resolver: zodResolver(schema),
     defaultValues: user
-      ? { name: user.name, email: user.email, role: user.role, status: user.status }
+      ? {
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          status: user.status,
+        }
       : { role: Role.VIEWER },
   });
 
   const currentRole = watch("role");
-  const currentStatus = isEditing ? watch("status" as keyof UpdateFormValues) : undefined;
+  const currentStatus = isEditing
+    ? watch("status" as keyof UpdateFormValues)
+    : undefined;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-lg">
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4">
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
         <Input id="name" {...register("name")} />
@@ -85,8 +92,10 @@ export function UserForm({ user, onSubmit, isPending }: UserFormProps) {
           />
           {"password" in errors && errors.password && (
             <p className="text-sm text-destructive">
-              {(errors as { password?: { message?: string } }).password
-                ?.message}
+              {
+                (errors as { password?: { message?: string } }).password
+                  ?.message
+              }
             </p>
           )}
         </div>
@@ -115,7 +124,10 @@ export function UserForm({ user, onSubmit, isPending }: UserFormProps) {
           <Select
             value={currentStatus as string}
             onValueChange={(value) =>
-              setValue("status" as keyof UpdateFormValues, value as "active" | "inactive")
+              setValue(
+                "status" as keyof UpdateFormValues,
+                value as "active" | "inactive"
+              )
             }
           >
             <SelectTrigger>
@@ -130,11 +142,7 @@ export function UserForm({ user, onSubmit, isPending }: UserFormProps) {
       )}
 
       <Button type="submit" disabled={isPending}>
-        {isPending
-          ? "Saving..."
-          : isEditing
-            ? "Update User"
-            : "Create User"}
+        {isPending ? "Saving..." : isEditing ? "Update User" : "Create User"}
       </Button>
     </form>
   );

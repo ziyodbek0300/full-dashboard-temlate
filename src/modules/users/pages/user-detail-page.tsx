@@ -54,14 +54,12 @@ export function UserDetailPage() {
               <p>{user.name}</p>
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Email
-              </p>
+              <p className="text-sm font-medium text-muted-foreground">Email</p>
               <p>{user.email}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Role</p>
-              <Badge variant="secondary" className="capitalize mt-1">
+              <Badge variant="secondary" className="mt-1 capitalize">
                 {user.role}
               </Badge>
             </div>

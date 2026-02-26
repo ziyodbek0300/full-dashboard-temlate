@@ -39,7 +39,12 @@ function processQueue(error: unknown, token: string | null): void {
   failedQueue = [];
 }
 
-const AUTH_ENDPOINTS = ["/auth/login", "/auth/register", "/auth/refresh", "/auth/me"];
+const AUTH_ENDPOINTS = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/refresh",
+  "/auth/me",
+];
 
 api.interceptors.response.use(
   (response) => response,
