@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { toast } from "sonner";
 import { PageLayout } from "@/shared/components/layout/page-layout";
 import { Button } from "@/shared/components/ui/button";
 import { LoadingSkeleton } from "@/shared/components/loading-skeleton";
 import { ROUTES } from "@/shared/constants/routes";
+import { useMutationWithToast } from "@/shared/hooks/use-mutation-with-toast";
 import { useUser, useUpdateUser } from "../hooks";
 import {
   EditUserForm,
@@ -17,19 +17,14 @@ export function UserEditPage() {
   const { data: user, isLoading } = useUser(id!);
   const updateUser = useUpdateUser();
 
+  const { mutateWithToast, isPending } = useMutationWithToast(updateUser, {
+    successMessage: "User updated successfully",
+    errorMessage: "Failed to update user",
+    redirectTo: ROUTES.USERS,
+  });
+
   const handleSubmit = (data: EditFormValues): void => {
-    updateUser.mutate(
-      { id: id!, data },
-      {
-        onSuccess: () => {
-          toast.success("User updated successfully");
-          navigate(ROUTES.USERS);
-        },
-        onError: () => {
-          toast.error("Failed to update user");
-        },
-      }
-    );
+    mutateWithToast({ id: id!, data });
   };
 
   if (isLoading) return <LoadingSkeleton variant="form" count={4} />;
@@ -46,11 +41,7 @@ export function UserEditPage() {
         </Button>
       }
     >
-      <EditUserForm
-        user={user}
-        onSubmit={handleSubmit}
-        isPending={updateUser.isPending}
-      />
+      <EditUserForm user={user} onSubmit={handleSubmit} isPending={isPending} />
     </PageLayout>
   );
 }

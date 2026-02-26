@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { toast } from "sonner";
 import { PageLayout } from "@/shared/components/layout/page-layout";
 import { Button } from "@/shared/components/ui/button";
 import { ROUTES } from "@/shared/constants/routes";
+import { useMutationWithToast } from "@/shared/hooks/use-mutation-with-toast";
 import { useCreateUser } from "../hooks";
 import {
   CreateUserForm,
@@ -14,16 +14,14 @@ export function UserCreatePage() {
   const navigate = useNavigate();
   const createUser = useCreateUser();
 
+  const { mutateWithToast, isPending } = useMutationWithToast(createUser, {
+    successMessage: "User created successfully",
+    errorMessage: "Failed to create user",
+    redirectTo: ROUTES.USERS,
+  });
+
   const handleSubmit = (data: CreateFormValues): void => {
-    createUser.mutate(data, {
-      onSuccess: () => {
-        toast.success("User created successfully");
-        navigate(ROUTES.USERS);
-      },
-      onError: () => {
-        toast.error("Failed to create user");
-      },
-    });
+    mutateWithToast(data);
   };
 
   return (
@@ -37,10 +35,7 @@ export function UserCreatePage() {
         </Button>
       }
     >
-      <CreateUserForm
-        onSubmit={handleSubmit}
-        isPending={createUser.isPending}
-      />
+      <CreateUserForm onSubmit={handleSubmit} isPending={isPending} />
     </PageLayout>
   );
 }

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Users } from "lucide-react";
-import { toast } from "sonner";
 import { PageLayout } from "@/shared/components/layout/page-layout";
 import { Button } from "@/shared/components/ui/button";
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
@@ -10,6 +9,7 @@ import { LoadingSkeleton } from "@/shared/components/loading-skeleton";
 import { useAuth } from "@/modules/auth/context";
 import { Permission } from "@/shared/types";
 import { ROUTES } from "@/shared/constants/routes";
+import { useMutationWithToast } from "@/shared/hooks/use-mutation-with-toast";
 import { useUsers, useDeleteUser } from "../hooks";
 import { UserTable } from "../components/user-table";
 import { UserFilters } from "../components/user-filters";
@@ -27,17 +27,16 @@ export function UsersListPage() {
   const { data, isLoading } = useUsers(filters);
   const deleteMutation = useDeleteUser();
 
+  const { mutateWithToast: deleteWithToast, isPending: isDeleting } =
+    useMutationWithToast(deleteMutation, {
+      successMessage: "User deleted successfully",
+      errorMessage: "Failed to delete user",
+      onSuccessCallback: () => setDeleteTarget(null),
+    });
+
   const handleDelete = (): void => {
     if (!deleteTarget) return;
-    deleteMutation.mutate(deleteTarget.id, {
-      onSuccess: () => {
-        toast.success("User deleted successfully");
-        setDeleteTarget(null);
-      },
-      onError: () => {
-        toast.error("Failed to delete user");
-      },
-    });
+    deleteWithToast(deleteTarget.id);
   };
 
   return (
@@ -89,7 +88,7 @@ export function UsersListPage() {
         confirmLabel="Delete"
         variant="destructive"
         onConfirm={handleDelete}
-        isPending={deleteMutation.isPending}
+        isPending={isDeleting}
       />
     </PageLayout>
   );
