@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Role } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 import { FormField, FormSelect } from "@/shared/components/form";
+import { ROLE_OPTIONS } from "@/shared/constants/role-options";
 import type { User } from "../types";
 
 const updateSchema = z.object({
@@ -14,12 +15,6 @@ const updateSchema = z.object({
 });
 
 export type EditFormValues = z.infer<typeof updateSchema>;
-
-const ROLE_OPTIONS = [
-  { label: "Admin", value: Role.ADMIN },
-  { label: "Manager", value: Role.MANAGER },
-  { label: "Viewer", value: Role.VIEWER },
-];
 
 const STATUS_OPTIONS = [
   { label: "Active", value: "active" },

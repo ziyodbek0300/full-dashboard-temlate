@@ -6,7 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { Role } from "@/shared/types";
+import { type Role } from "@/shared/types";
+import { ROLE_OPTIONS } from "@/shared/constants/role-options";
 import { Search } from "lucide-react";
 import type { UserFilters as UserFiltersType } from "../types";
 
@@ -44,9 +45,11 @@ export function UserFilters({ filters, onChange }: UserFiltersProps) {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All Roles</SelectItem>
-          <SelectItem value={Role.ADMIN}>Admin</SelectItem>
-          <SelectItem value={Role.MANAGER}>Manager</SelectItem>
-          <SelectItem value={Role.VIEWER}>Viewer</SelectItem>
+          {ROLE_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>

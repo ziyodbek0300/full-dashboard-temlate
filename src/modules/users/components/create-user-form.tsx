@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Role } from "@/shared/types";
 import { Button } from "@/shared/components/ui/button";
 import { FormField, FormSelect } from "@/shared/components/form";
+import { ROLE_OPTIONS } from "@/shared/constants/role-options";
 
 const createSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -13,12 +14,6 @@ const createSchema = z.object({
 });
 
 export type CreateFormValues = z.infer<typeof createSchema>;
-
-const ROLE_OPTIONS = [
-  { label: "Admin", value: Role.ADMIN },
-  { label: "Manager", value: Role.MANAGER },
-  { label: "Viewer", value: Role.VIEWER },
-];
 
 interface CreateUserFormProps {
   onSubmit: (data: CreateFormValues) => void;
