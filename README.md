@@ -1,22 +1,28 @@
 # Dashboard Application Framework
 
-Production-grade SaaS dashboard framework built with React 18, TypeScript (strict), Vite, TailwindCSS, and shadcn/ui. Features authentication, RBAC, modular architecture, and a full CRUD Users module.
+Production-grade SaaS dashboard framework built with React 18, TypeScript (strict), Vite, TailwindCSS, and shadcn/ui. Features authentication, RBAC, modular architecture, a full CRUD Users module, and a GitHub repository browser with syntax highlighting.
+
+**Live Preview:** https://full-dashboard-temlate.vercel.app
+
+**Source Code Browser:** https://full-dashboard-temlate.vercel.app/app/repositories
 
 ## Tech Stack
 
-| Category     | Technology                                         |
-| ------------ | -------------------------------------------------- |
-| Framework    | React 18, TypeScript (strict)                      |
-| Build        | Vite                                               |
-| Styling      | TailwindCSS, shadcn/ui, CVA, clsx, tailwind-merge  |
-| Routing      | react-router-dom v6 (lazy loading, guards)         |
-| Server State | @tanstack/react-query                              |
-| Forms        | react-hook-form, Zod                               |
-| HTTP         | Axios (interceptors, token refresh, error mapping) |
-| Client State | Zustand (theme, sidebar)                           |
-| Icons        | lucide-react                                       |
-| Toasts       | Sonner                                             |
-| Code Quality | Prettier, Husky, lint-staged                       |
+| Category     | Technology                                          |
+| ------------ | --------------------------------------------------- |
+| Framework    | React 18, TypeScript (strict)                       |
+| Build        | Vite                                                |
+| Styling      | TailwindCSS, shadcn/ui, CVA, clsx, tailwind-merge   |
+| Routing      | react-router-dom v6 (lazy loading, guards)          |
+| Server State | @tanstack/react-query                               |
+| Forms        | react-hook-form, Zod                                |
+| HTTP         | Axios (interceptors, token refresh, error mapping)  |
+| Client State | Zustand (theme, sidebar, saved repos)               |
+| Syntax HL    | react-syntax-highlighter (PrismLight)               |
+| Markdown     | react-markdown, remark-gfm, @tailwindcss/typography |
+| Icons        | lucide-react                                        |
+| Toasts       | Sonner                                              |
+| Code Quality | Prettier, Husky, lint-staged                        |
 
 ## Quick Start
 
@@ -110,10 +116,30 @@ src/
 │   │   │   └── user-edit-page.tsx
 │   │   └── index.ts
 │   │
-│   └── settings/
-│       ├── types.ts
+│   ├── settings/
+│   │   ├── types.ts
+│   │   ├── pages/
+│   │   │   └── settings-page.tsx # Profile settings form
+│   │   └── index.ts
+│   │
+│   └── repositories/
+│       ├── api.ts                # Separate axios instance for api.github.com
+│       ├── hooks.ts              # useRepository, useContents, useFileContent, useReadme, useRateLimit
+│       ├── store.ts              # Zustand persisted store for saved repos
+│       ├── types.ts              # GitHub API types, SavedRepository
+│       ├── components/
+│       │   ├── file-icon.tsx     # Extension-based icon mapping
+│       │   ├── repo-breadcrumbs.tsx
+│       │   ├── directory-listing.tsx
+│       │   ├── file-viewer.tsx   # PrismLight syntax highlighting (12 languages)
+│       │   ├── readme-preview.tsx
+│       │   ├── add-repo-dialog.tsx
+│       │   ├── repo-card.tsx
+│       │   └── rate-limit-banner.tsx
 │       ├── pages/
-│       │   └── settings-page.tsx # Profile settings form
+│       │   ├── repositories-list-page.tsx
+│       │   ├── repository-browser-page.tsx
+│       │   └── repository-file-page.tsx
 │       └── index.ts
 │
 ├── shared/                       # Cross-domain reusable code
@@ -194,16 +220,20 @@ Permissions are checked via `hasPermission()` from `useAuth()`. UI elements (but
 
 ## Routing
 
-| Path                  | Guard       | Description                        |
-| --------------------- | ----------- | ---------------------------------- |
-| `/login`              | PublicGuard | Login page                         |
-| `/register`           | PublicGuard | Register page                      |
-| `/app`                | AuthGuard   | Redirects to `/app/users`          |
-| `/app/users`          | AuthGuard   | Users list (paginated, searchable) |
-| `/app/users/new`      | AuthGuard   | Create user form                   |
-| `/app/users/:id`      | AuthGuard   | User detail view                   |
-| `/app/users/:id/edit` | AuthGuard   | Edit user form                     |
-| `/app/settings`       | AuthGuard   | Profile settings                   |
+| Path                                    | Guard       | Description                          |
+| --------------------------------------- | ----------- | ------------------------------------ |
+| `/login`                                | PublicGuard | Login page                           |
+| `/register`                             | PublicGuard | Register page                        |
+| `/app`                                  | AuthGuard   | Redirects to `/app/users`            |
+| `/app/users`                            | AuthGuard   | Users list (paginated, searchable)   |
+| `/app/users/new`                        | AuthGuard   | Create user form                     |
+| `/app/users/:id`                        | AuthGuard   | User detail view                     |
+| `/app/users/:id/edit`                   | AuthGuard   | Edit user form                       |
+| `/app/settings`                         | AuthGuard   | Profile settings                     |
+| `/app/repositories`                     | AuthGuard   | Saved repos grid + add/remove/search |
+| `/app/repositories/:owner/:repo`        | AuthGuard   | Root directory listing + README      |
+| `/app/repositories/:owner/:repo/tree/*` | AuthGuard   | Subdirectory listing                 |
+| `/app/repositories/:owner/:repo/blob/*` | AuthGuard   | Syntax-highlighted file view         |
 
 All route components are lazy-loaded. Route-level error boundaries catch rendering failures.
 
@@ -232,6 +262,7 @@ To connect a real backend, remove the `setupMockInterceptor(api)` call in `src/s
 
 ```bash
 VITE_API_BASE_URL=http://localhost:3000/api
+VITE_GITHUB_TOKEN=ghp_...   # Optional: increases GitHub API rate limit from 60 to 5,000 req/hr
 ```
 
 Copy `.env.example` to `.env` and configure as needed.
