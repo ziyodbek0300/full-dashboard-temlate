@@ -42,6 +42,21 @@ const SettingsPage = lazy(() =>
     default: m.SettingsPage,
   }))
 );
+const RepositoriesListPage = lazy(() =>
+  import("@/modules/repositories/pages/repositories-list-page").then((m) => ({
+    default: m.RepositoriesListPage,
+  }))
+);
+const RepositoryBrowserPage = lazy(() =>
+  import("@/modules/repositories/pages/repository-browser-page").then((m) => ({
+    default: m.RepositoryBrowserPage,
+  }))
+);
+const RepositoryFilePage = lazy(() =>
+  import("@/modules/repositories/pages/repository-file-page").then((m) => ({
+    default: m.RepositoryFilePage,
+  }))
+);
 
 function RouteErrorFallback() {
   const error = useRouteError();
@@ -142,6 +157,38 @@ export const router = createBrowserRouter([
             element: (
               <LazyLoad>
                 <SettingsPage />
+              </LazyLoad>
+            ),
+          },
+          {
+            path: ROUTES.REPOSITORIES,
+            element: (
+              <LazyLoad>
+                <RepositoriesListPage />
+              </LazyLoad>
+            ),
+          },
+          {
+            path: "/app/repositories/:owner/:repo",
+            element: (
+              <LazyLoad>
+                <RepositoryBrowserPage />
+              </LazyLoad>
+            ),
+          },
+          {
+            path: "/app/repositories/:owner/:repo/tree/*",
+            element: (
+              <LazyLoad>
+                <RepositoryBrowserPage />
+              </LazyLoad>
+            ),
+          },
+          {
+            path: "/app/repositories/:owner/:repo/blob/*",
+            element: (
+              <LazyLoad>
+                <RepositoryFilePage />
               </LazyLoad>
             ),
           },
