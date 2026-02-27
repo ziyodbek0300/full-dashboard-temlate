@@ -1,4 +1,4 @@
-import { Users, Settings, type LucideIcon } from "lucide-react";
+import { Users, Settings, FolderGit2, type LucideIcon } from "lucide-react";
 import { ROUTES } from "./routes";
 import type { Permission } from "@/shared/types";
 
@@ -14,6 +14,11 @@ export const NAV_ITEMS: NavItem[] = [
     title: "Users",
     href: ROUTES.USERS,
     icon: Users,
+  },
+  {
+    title: "Source Code",
+    href: ROUTES.REPOSITORIES,
+    icon: FolderGit2,
   },
   {
     title: "Settings",
