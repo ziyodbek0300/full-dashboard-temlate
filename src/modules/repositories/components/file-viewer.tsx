@@ -130,7 +130,7 @@ export function FileViewer({
   const language = EXTENSION_TO_LANGUAGE[ext] ?? "text";
 
   return (
-    <div className="overflow-hidden rounded-md border">
+    <div className="overflow-x-auto rounded-md border">
       <SyntaxHighlighter
         language={language}
         style={isDark ? oneDark : oneLight}

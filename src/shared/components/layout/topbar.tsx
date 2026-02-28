@@ -22,12 +22,10 @@ export function Topbar() {
   const logout = useLogout();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useThemeStore();
-  const { toggle: toggleSidebar } = useSidebarStore();
+  const { setMobileOpen } = useSidebarStore();
 
   const handleLogout = (): void => {
-    logout.mutate(undefined, {
-      onSettled: () => navigate(ROUTES.LOGIN),
-    });
+    logout.mutate();
   };
 
   const initials = user?.name
@@ -43,12 +41,14 @@ export function Topbar() {
         variant="ghost"
         size="icon"
         className="h-8 w-8 md:hidden"
-        onClick={toggleSidebar}
+        onClick={() => setMobileOpen(true)}
       >
         <Menu className="h-4 w-4" />
       </Button>
 
-      <Breadcrumbs />
+      <div className="hidden sm:block">
+        <Breadcrumbs />
+      </div>
 
       <div className="ml-auto flex items-center gap-2">
         <Button variant="ghost" size="icon" onClick={toggleTheme}>
