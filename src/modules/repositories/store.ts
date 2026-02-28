@@ -12,7 +12,13 @@ interface RepositoryStore {
 export const useRepositoryStore = create<RepositoryStore>()(
   persist(
     (set, get) => ({
-      repositories: [],
+      repositories: [
+        {
+          owner: "ziyodbek0300",
+          repo: "full-dashboard-temlate",
+          addedAt: "2025-01-01T00:00:00.000Z",
+        },
+      ],
       addRepository: (owner, repo) => {
         const existing = get().repositories;
         if (existing.some((r) => r.owner === owner && r.repo === repo)) return;
