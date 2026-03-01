@@ -32,9 +32,9 @@ export function RepositoryFilePage() {
     <div className="space-y-4">
       <RateLimitBanner />
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <RepoBreadcrumbs owner={owner} repo={repo} path={path} isFile />
-        <Button variant="outline" size="sm" asChild>
+        <Button variant="outline" size="sm" className="self-start" asChild>
           <a href={data.html_url} target="_blank" rel="noopener noreferrer">
             <ExternalLink className="mr-1 h-3.5 w-3.5" />
             View on GitHub

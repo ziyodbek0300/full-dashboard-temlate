@@ -18,7 +18,7 @@ export function RepoBreadcrumbs({
   const segments = path ? path.split("/").filter(Boolean) : [];
 
   return (
-    <nav className="flex items-center gap-1 text-sm">
+    <nav className="flex flex-wrap items-center gap-1 text-sm">
       <Link
         to={ROUTES.REPOSITORIES}
         className="text-muted-foreground hover:text-foreground"

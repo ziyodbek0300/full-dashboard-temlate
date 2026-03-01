@@ -45,7 +45,10 @@ export function useLogout() {
     onSettled: () => {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
-      queryClient.clear();
+      queryClient.setQueryData(queryKeys.auth.currentUser, null);
+      queryClient.removeQueries({
+        predicate: (query) => query.queryKey !== queryKeys.auth.currentUser,
+      });
     },
   });
 }

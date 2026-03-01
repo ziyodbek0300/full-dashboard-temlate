@@ -39,7 +39,7 @@ export function RepositoryBrowserPage() {
       <RepoBreadcrumbs owner={owner} repo={repo} path={path} />
 
       {!path && repoQuery.data && (
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
           {repoQuery.data.description && (
             <p className="flex-1 text-sm text-muted-foreground">
               {repoQuery.data.description}

@@ -71,12 +71,15 @@ api.interceptors.response.use(
       }
 
       originalRequest._retry = true;
+
+      const refreshToken = localStorage.getItem("refresh_token");
+      if (!refreshToken) {
+        return Promise.reject(ApiError.fromAxiosError(error));
+      }
+
       isRefreshing = true;
 
       try {
-        const refreshToken = localStorage.getItem("refresh_token");
-        if (!refreshToken) throw new Error("No refresh token");
-
         const { data } = await api.post<{
           data: { accessToken: string; refreshToken: string };
         }>("/auth/refresh", { refreshToken });
@@ -92,7 +95,6 @@ api.interceptors.response.use(
         processQueue(refreshError, null);
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        window.location.href = "/login";
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

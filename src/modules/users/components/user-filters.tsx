@@ -18,8 +18,8 @@ interface UserFiltersProps {
 
 export function UserFilters({ filters, onChange }: UserFiltersProps) {
   return (
-    <div className="flex items-center gap-4">
-      <div className="relative max-w-sm flex-1">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+      <div className="relative flex-1 sm:max-w-sm">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search users..."
@@ -40,7 +40,7 @@ export function UserFilters({ filters, onChange }: UserFiltersProps) {
           })
         }
       >
-        <SelectTrigger className="w-[150px]">
+        <SelectTrigger className="w-full sm:w-[150px]">
           <SelectValue placeholder="All Roles" />
         </SelectTrigger>
         <SelectContent>
