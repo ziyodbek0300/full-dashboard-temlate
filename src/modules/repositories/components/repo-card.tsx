@@ -67,7 +67,7 @@ export function RepoCard({ owner, repo }: RepoCardProps) {
       <CardHeader className="flex-1">
         <CardTitle className="text-base">
           <Link
-            to={ROUTES.REPOSITORY_BROWSER(owner, repo)}
+            to={ROUTES.REPOSITORY_PATH(owner, repo)}
             className="hover:text-primary hover:underline"
           >
             {data.full_name}

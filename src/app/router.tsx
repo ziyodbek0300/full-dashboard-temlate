@@ -52,11 +52,6 @@ const RepositoryBrowserPage = lazy(() =>
     default: m.RepositoryBrowserPage,
   }))
 );
-const RepositoryFilePage = lazy(() =>
-  import("@/modules/repositories/pages/repository-file-page").then((m) => ({
-    default: m.RepositoryFilePage,
-  }))
-);
 
 function RouteErrorFallback() {
   const error = useRouteError();
@@ -169,26 +164,10 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "/app/repositories/:owner/:repo",
+            path: "/app/repositories/:owner/:repo/*",
             element: (
               <LazyLoad>
                 <RepositoryBrowserPage />
-              </LazyLoad>
-            ),
-          },
-          {
-            path: "/app/repositories/:owner/:repo/tree/*",
-            element: (
-              <LazyLoad>
-                <RepositoryBrowserPage />
-              </LazyLoad>
-            ),
-          },
-          {
-            path: "/app/repositories/:owner/:repo/blob/*",
-            element: (
-              <LazyLoad>
-                <RepositoryFilePage />
               </LazyLoad>
             ),
           },

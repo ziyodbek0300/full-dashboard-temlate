@@ -52,11 +52,7 @@ export function DirectoryListing({
               </TableCell>
               <TableCell className="py-2">
                 <Link
-                  to={
-                    item.type === "dir"
-                      ? ROUTES.REPOSITORY_BROWSER(owner, repo, item.path)
-                      : ROUTES.REPOSITORY_FILE(owner, repo, item.path)
-                  }
+                  to={ROUTES.REPOSITORY_PATH(owner, repo, item.path)}
                   className="hover:text-primary hover:underline"
                 >
                   {item.name}
