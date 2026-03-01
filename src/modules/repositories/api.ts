@@ -4,6 +4,7 @@ import type {
   GitHubContent,
   GitHubFileContent,
   GitHubRateLimit,
+  PathContent,
 } from "./types";
 
 const githubApi = axios.create({
@@ -39,15 +40,18 @@ export async function getContents(
   return response.data;
 }
 
-export async function getFileContent(
+export async function getPathContent(
   owner: string,
   repo: string,
-  path: string
-): Promise<GitHubFileContent> {
-  const response = await githubApi.get<GitHubFileContent>(
+  path = ""
+): Promise<PathContent> {
+  const response = await githubApi.get<GitHubContent[] | GitHubFileContent>(
     `/repos/${owner}/${repo}/contents/${path}`
   );
-  return response.data;
+  if (Array.isArray(response.data)) {
+    return { type: "dir", contents: response.data };
+  }
+  return { type: "file", file: response.data };
 }
 
 export async function getReadme(

@@ -6,28 +6,15 @@ interface RepoBreadcrumbsProps {
   owner: string;
   repo: string;
   path?: string;
-  isFile?: boolean;
 }
 
-export function RepoBreadcrumbs({
-  owner,
-  repo,
-  path,
-  isFile,
-}: RepoBreadcrumbsProps) {
+export function RepoBreadcrumbs({ owner, repo, path }: RepoBreadcrumbsProps) {
   const segments = path ? path.split("/").filter(Boolean) : [];
 
   return (
     <nav className="flex flex-wrap items-center gap-1 text-sm">
       <Link
-        to={ROUTES.REPOSITORIES}
-        className="text-muted-foreground hover:text-foreground"
-      >
-        Repositories
-      </Link>
-      <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
-      <Link
-        to={ROUTES.REPOSITORY_BROWSER(owner, repo)}
+        to={ROUTES.REPOSITORY_PATH(owner, repo)}
         className="font-semibold text-foreground hover:underline"
       >
         {owner}/{repo}
@@ -43,11 +30,7 @@ export function RepoBreadcrumbs({
               <span className="font-medium text-foreground">{segment}</span>
             ) : (
               <Link
-                to={
-                  isFile && isLast
-                    ? ROUTES.REPOSITORY_FILE(owner, repo, segmentPath)
-                    : ROUTES.REPOSITORY_BROWSER(owner, repo, segmentPath)
-                }
+                to={ROUTES.REPOSITORY_PATH(owner, repo, segmentPath)}
                 className="text-muted-foreground hover:text-foreground hover:underline"
               >
                 {segment}

@@ -8,10 +8,8 @@ export const ROUTES = {
   USER_EDIT: (id: string): string => `/app/users/${id}/edit`,
   SETTINGS: "/app/settings",
   REPOSITORIES: "/app/repositories",
-  REPOSITORY_BROWSER: (owner: string, repo: string, path?: string): string =>
+  REPOSITORY_PATH: (owner: string, repo: string, path?: string): string =>
     path
-      ? `/app/repositories/${owner}/${repo}/tree/${path}`
+      ? `/app/repositories/${owner}/${repo}/${path}`
       : `/app/repositories/${owner}/${repo}`,
-  REPOSITORY_FILE: (owner: string, repo: string, path: string): string =>
-    `/app/repositories/${owner}/${repo}/blob/${path}`,
 } as const;

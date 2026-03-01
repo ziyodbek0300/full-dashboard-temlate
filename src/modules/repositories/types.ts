@@ -49,3 +49,7 @@ export interface GitHubRateLimit {
   remaining: number;
   reset: number;
 }
+
+export type PathContent =
+  | { type: "dir"; contents: GitHubContent[] }
+  | { type: "file"; file: GitHubFileContent };

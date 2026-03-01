@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { queryKeys } from "@/shared/constants/query-keys";
 import * as repoApi from "./api";
 
@@ -20,12 +20,13 @@ export function useContents(owner: string, repo: string, path = "") {
   });
 }
 
-export function useFileContent(owner: string, repo: string, path: string) {
+export function usePathContent(owner: string, repo: string, path = "") {
   return useQuery({
-    queryKey: queryKeys.repositories.contents(owner, repo, path),
-    queryFn: () => repoApi.getFileContent(owner, repo, path),
-    enabled: !!owner && !!repo && !!path,
+    queryKey: [...queryKeys.repositories.contents(owner, repo, path), "auto"],
+    queryFn: () => repoApi.getPathContent(owner, repo, path),
+    enabled: !!owner && !!repo,
     staleTime: 5 * 60 * 1000,
+    placeholderData: keepPreviousData,
   });
 }
 
